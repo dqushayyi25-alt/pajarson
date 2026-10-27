@@ -6,7 +6,7 @@
   <title>Spotify Web Clone</title>
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts (Circular / Inter-like font) -->
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <style>
@@ -103,10 +103,6 @@
       align-items: center;
       color: var(--text-secondary);
       margin-bottom: 16px;
-    }
-
-    .library-header:hover {
-      color: var(--text-primary);
     }
 
     .library-title {
@@ -270,6 +266,7 @@
       background: linear-gradient(180deg, rgba(83, 83, 83, 0.6) 0%, rgba(18, 18, 18, 0) 100%);
       margin: -16px -32px 24px;
       padding: 32px 32px 20px;
+      border-radius: 8px;
     }
 
     .section-title {
@@ -556,26 +553,168 @@
       background-color: var(--spotify-green);
     }
 
+    /* MOBILE NAVIGATION BOTTOM BAR (Hidden on Desktop) */
+    .mobile-nav {
+      display: none;
+    }
+
+    /* --- RESPONSIVE CSS UNTUK HP / MOBILE --- */
+    @media screen and (max-width: 768px) {
+      .app-container {
+        flex-direction: column;
+        padding: 0;
+        height: calc(100vh - var(--player-height) - 60px);
+      }
+
+      /* Sembunyikan sidebar samping di HP */
+      .sidebar {
+        display: none;
+      }
+
+      .main-content {
+        border-radius: 0;
+      }
+
+      .top-bar {
+        padding: 10px 16px;
+      }
+
+      .search-box {
+        width: 100%;
+      }
+
+      .user-profile {
+        display: none;
+      }
+
+      .content-body {
+        padding: 0 16px 20px;
+      }
+
+      .hero-banner {
+        margin: -10px -16px 16px;
+        padding: 20px 16px 12px;
+      }
+
+      .hero-banner h1 {
+        font-size: 1.5rem !important;
+      }
+
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .music-card {
+        padding: 10px;
+      }
+
+      /* Selalu tampilkan tombol play di card saat di HP agar mudah ditekan */
+      .card-play-btn {
+        opacity: 1;
+        transform: translateY(0);
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+
+      /* Sesuaikan player bawah untuk HP */
+      .player-bar {
+        height: 75px;
+        padding: 0 8px;
+      }
+
+      .now-playing {
+        width: 50%;
+        min-width: 0;
+        gap: 10px;
+      }
+
+      .now-playing-img {
+        width: 45px;
+        height: 45px;
+      }
+
+      .player-controls {
+        width: 45%;
+      }
+
+      .control-buttons {
+        gap: 12px;
+      }
+
+      .control-btn:not(#playPauseBtn) {
+        display: none; /* Sembunyikan tombol shuffle/repeat agar tidak sesak di HP */
+      }
+
+      .play-pause-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.85rem;
+      }
+
+      .volume-controls {
+        display: none; /* Sembunyikan kontrol volume desktop */
+      }
+
+      .progress-container span {
+        font-size: 0.6rem;
+      }
+
+      /* Tampilkan navigasi bawah ala aplikasi Spotify mobile */
+      .mobile-nav {
+        display: flex;
+        position: fixed;
+        bottom: 75px;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        background-color: rgba(18, 18, 18, 0.95);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid #282828;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 300;
+      }
+
+      .mobile-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        color: var(--text-secondary);
+        font-size: 0.7rem;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      .mobile-nav-item.active, .mobile-nav-item:hover {
+        color: var(--text-primary);
+      }
+
+      .mobile-nav-item i {
+        font-size: 1.2rem;
+      }
+    }
+
     /* SCROLLBAR */
     ::-webkit-scrollbar {
-      width: 12px;
+      width: 8px;
     }
     ::-webkit-scrollbar-track {
       background: transparent;
     }
     ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 6px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
     }
   </style>
 </head>
 <body>
 
   <div class="app-container">
-    <!-- SIDEBAR -->
+    <!-- SIDEBAR (DESKTOP) -->
     <aside class="sidebar">
       <nav class="nav-section">
         <ul class="nav-list">
@@ -606,7 +745,7 @@
       <header class="top-bar">
         <div class="search-box">
           <i class="fa-solid fa-magnifying-glass"></i>
-          <input type="text" id="searchInput" class="search-input" placeholder="Apa yang ingin kamu dengarkan?">
+          <input type="text" id="searchInput" class="search-input" placeholder="Cari lagu atau artis...">
         </div>
         <div class="user-profile">
           <div class="user-avatar">
@@ -630,6 +769,13 @@
       </div>
     </main>
   </div>
+
+  <!-- MOBILE BOTTOM NAVIGATION (Hanya tampil di HP) -->
+  <nav class="mobile-nav">
+    <div class="mobile-nav-item active"><i class="fa-solid fa-house"></i><span>Utama</span></div>
+    <div class="mobile-nav-item" onclick="document.getElementById('searchInput').focus();"><i class="fa-solid fa-magnifying-glass"></i><span>Cari</span></div>
+    <div class="mobile-nav-item"><i class="fa-solid fa-book"></i><span>Koleksi</span></div>
+  </nav>
 
   <!-- BOTTOM PLAYER BAR -->
   <footer class="player-bar">
@@ -680,7 +826,6 @@
   <!-- JAVASCRIPT CODE -->
   <script>
     // --- SAMPLE SONG DATA ---
-    // (Menggunakan Audio Bebas Hak Cipta dari Mixkit/CDN)
     const songs = [
       {
         id: 1,
@@ -705,14 +850,14 @@
       },
       {
         id: 4,
-        title: "We Don't Talk Anymore ",
+        title: "We Don't Talk Anymore",
         artist: "Charlie Puth",
         cover: "image/gitaris tamora.jpeg",
         url: "Song/Charlie Puth - We Don't Talk Anymore (Lyrics) ft. Selena Gomez.mp3"
       },
       {
         id: 6,
-        title: "Maher Zain - Paradise ",
+        title: "Maher Zain - Paradise",
         artist: "Maher Zain",
         cover: "image/bayanghytam.jpeg",
         url: "Song/Maher Zain - Paradise (Lyrics).mp3"
@@ -774,7 +919,7 @@
         return;
       }
 
-      songsToRender.forEach((song, index) => {
+      songsToRender.forEach((song) => {
         const card = document.createElement('div');
         card.className = 'music-card';
         card.innerHTML = `
@@ -852,7 +997,6 @@
 
     // EVENT LISTENERS SETUP
     function setupEventListeners() {
-      // Play / Pause Toggle
       playPauseBtn.addEventListener('click', () => {
         if(isPlaying) {
           pauseAudio();
@@ -861,21 +1005,18 @@
         }
       });
 
-      // Next Song
       nextBtn.addEventListener('click', () => {
         currentSongIndex = (currentSongIndex + 1) % songs.length;
         loadSong(songs[currentSongIndex]);
         playAudio();
       });
 
-      // Previous Song
       prevBtn.addEventListener('click', () => {
         currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
         loadSong(songs[currentSongIndex]);
         playAudio();
       });
 
-      // Audio Time Update
       audio.addEventListener('timeupdate', () => {
         const { currentTime, duration } = audio;
         if(duration) {
@@ -886,12 +1027,10 @@
         }
       });
 
-      // Auto Play Next on Song End
       audio.addEventListener('ended', () => {
         nextBtn.click();
       });
 
-      // Seek Progress
       progressWrapper.addEventListener('click', (e) => {
         const width = progressWrapper.clientWidth;
         const clickX = e.offsetX;
@@ -901,7 +1040,6 @@
         }
       });
 
-      // Volume Control
       volumeWrapper.addEventListener('click', (e) => {
         const width = volumeWrapper.clientWidth;
         const clickX = e.offsetX;
@@ -910,7 +1048,6 @@
         volumeFill.style.width = `${volume * 100}%`;
       });
 
-      // Like Button Toggle
       likeBtn.addEventListener('click', () => {
         isLiked = !isLiked;
         if(isLiked) {
@@ -922,7 +1059,6 @@
         }
       });
 
-      // Search Filter Functionality
       searchInput.addEventListener('input', (e) => {
         const term = e.target.value.toLowerCase();
         const filteredSongs = songs.filter(song => 
@@ -932,7 +1068,6 @@
         renderSongs(filteredSongs);
       });
 
-      // Add New Playlist Button
       addPlaylistBtn.addEventListener('click', () => {
         const newName = prompt('Masukkan nama playlist baru:', `Playlist Saya #${playlists.length + 1}`);
         if(newName) {
@@ -947,7 +1082,6 @@
       });
     }
 
-    // RUN ON LOAD
     window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
